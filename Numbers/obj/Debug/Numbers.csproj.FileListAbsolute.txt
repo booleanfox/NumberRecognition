@@ -1,0 +1,32 @@
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\bin\Debug\Numbers.exe.config
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\bin\Debug\Numbers.exe
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\bin\Debug\Numbers.pdb
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\obj\Debug\Numbers.csprojAssemblyReference.cache
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\obj\Debug\Numbers.Properties.Resources.resources
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\obj\Debug\Numbers.csproj.GenerateResource.cache
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\obj\Debug\Numbers.csproj.CoreCompileInputs.cache
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\obj\Debug\Numbers.exe
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\obj\Debug\Numbers.pdb
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\bin\Debug\AForge.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\bin\Debug\AForge.Imaging.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\bin\Debug\AForge.Math.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\bin\Debug\AForge.Video.DirectShow.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\bin\Debug\AForge.Video.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\obj\Debug\Numbers.Form1.resources
+C:\Users\boole\Documents\TEAM_WORK\Numbers\Numbers\obj\Debug\Numbers.csproj.CopyComplete
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\bin\Debug\Numbers.exe.config
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\bin\Debug\Numbers.exe
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\bin\Debug\Numbers.pdb
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\bin\Debug\AForge.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\bin\Debug\AForge.Imaging.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\bin\Debug\AForge.Math.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\bin\Debug\AForge.Video.DirectShow.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\bin\Debug\AForge.Video.dll
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\obj\Debug\Numbers.csprojAssemblyReference.cache
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\obj\Debug\Numbers.Form1.resources
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\obj\Debug\Numbers.Properties.Resources.resources
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\obj\Debug\Numbers.csproj.GenerateResource.cache
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\obj\Debug\Numbers.csproj.CoreCompileInputs.cache
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\obj\Debug\Numbers.csproj.CopyComplete
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\obj\Debug\Numbers.exe
+C:\Users\boole\Documents\TEAM_WORK\Numbers — копия\Numbers\obj\Debug\Numbers.pdb
