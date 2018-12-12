@@ -85,6 +85,37 @@ namespace Numbers
            Bitmap pic = cameraImg.ToManagedImage();
            return pic;
         }
+
+        private void rotateNumber()
+        {
+            // Центр масс
+            Tuple<int, int> mass_center;
+            // Геометрический центр
+            Tuple<int, int> geom_center;
+  
+            int w = number.Width;
+            int h = number.Height;
+
+            geom_center = new Tuple<int, int>(w / 2, h / 2);
+
+            int x = 0, y = 0;
+            for (int i = 0; i < w; i++)
+                for (int j = 0; j < h; j++)
+                {
+                    Color clr = number.GetPixel(i, j);
+                    if (clr.R == 255 && clr.G == 255 && clr.B == 255)
+                    {
+                        x += i / w; 
+                        y += j / h;
+                    }
+                }
+            mass_center = new Tuple<int, int>(x, y);
+
+            // Угол наклона вектора <геом.центр -- центр масс>
+            double grad = (double)(geom_center.Item2 - mass_center.Item2) / (double)(geom_center.Item1 - mass_center.Item1);
+            double rad = grad / 57.29;
+            double angle = Math.Atan(rad);
+        }
         
     }
 }
