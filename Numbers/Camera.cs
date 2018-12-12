@@ -21,7 +21,7 @@ namespace Numbers
         /// Оригинальное изображение и обработанное
         /// </summary>
         public AForge.Imaging.UnmanagedImage processed;
-        public Bitmap original;
+        public Bitmap original, number;
 
         public int errorCount = 0;
         public bool stopByErrors = false;
@@ -68,28 +68,22 @@ namespace Numbers
             ///  Инвертируем изображение
             AForge.Imaging.Filters.Invert InvertFilter = new AForge.Imaging.Filters.Invert();
             InvertFilter.ApplyInPlace(cameraImg);
+        }
 
-            ///    Создаём BlobCounter, выдёргиваем самый большой кусок, масштабируем, пересечение и сохраняем
-            ///    изображение в эксклюзивном использовании
-            AForge.Imaging.BlobCounterBase bc = new AForge.Imaging.BlobCounter();
+        public Bitmap recogniseNumber()
+        {
+            Bitmap pic;
 
-            bc.FilterBlobs = true;
-            bc.MinWidth = 3;
-            bc.MinHeight = 3;
+            AForge.Imaging.Filters.ExtractBiggestBlob extractFfilter = new AForge.Imaging.Filters.ExtractBiggestBlob();
+            pic = extractFfilter.Apply(cameraImg.ToManagedImage());
+            number = pic;
+            return pic;
+        }
 
-            // Упорядочиваем по размеру
-            bc.ObjectsOrder = AForge.Imaging.ObjectsOrder.Size;
-            // Обрабатываем картинку
-
-            bc.ProcessImage(cameraImg);
-
-            // Извлекаем самый большой блоб
-            AForge.Imaging.Blob[] blobs = bc.GetObjectsInformation();
-            if (blobs.Length > 0)
-            {
-                bc.ExtractBlobsImage(cameraImg, blobs[0], true);
-            }
-
+        public Bitmap showPicture()
+        {
+           Bitmap pic = cameraImg.ToManagedImage();
+           return pic;
         }
         
     }

@@ -52,25 +52,24 @@ namespace Numbers
 
             if (processor.stopByErrors)
             {
-                //  О, тут всё плохо - что-то случилось и сломалось
+                //  Тут на случай ошибок
                 Debug.WriteLine("Stopped by fatal errors level");
- 
-               
+            
                 return;
             }
+
+           
+           
         }
 
         private void buttonStart_Click(object sender, EventArgs e)
         {
-            //
-            // Важно: ВНАЧАЛЕ ЖМЁМ НА "Стоп", потом закрываем крестиком окно
-
             if (videoSource == null)
             {
                 videoSource = new VideoCaptureDevice(videoDevicesList[cmbVideoSource.SelectedIndex].MonikerString);
                 videoSource.NewFrame += new NewFrameEventHandler(video_NewFrame);
                 videoSource.Start();
-                btnStart.Text = "Стоп";
+                btnStart.Text = "Stop";
             }
             else
             {
@@ -80,9 +79,27 @@ namespace Numbers
                     pictureBox1.Image.Dispose();
                 }
                 videoSource = null;
-                btnStart.Text = "Старт";
+                btnStart.Text = "Start";
               
             }
+        }
+
+        // Чтобы вебка не падала в обморок при неожиданном закрытии окна
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (btnStart.Text == "Stop")
+                videoSource.SignalToStop();
+            if (videoSource != null && videoSource.IsRunning && pictureBox1.Image != null)
+            {
+                pictureBox1.Image.Dispose();
+            }
+            videoSource = null;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            //pictureBox2.Image = processor.showPicture();
+            pictureBox2.Image = processor.recogniseNumber();
         }
     }
 }
