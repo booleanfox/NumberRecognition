@@ -80,14 +80,42 @@ namespace Numbers
             return pic;
         }
 
+        
+        // Запасной вариант, нехороший
+        public Bitmap recogniseNumber2()
+        {
+            Bitmap pic;
+
+            AForge.Imaging.BlobCounterBase bc = new AForge.Imaging.BlobCounter();
+
+            bc.FilterBlobs = true;
+            bc.MinWidth = 5;
+            bc.MinHeight = 5;
+      
+            bc.ObjectsOrder = AForge.Imaging.ObjectsOrder.Size;
+  
+            bc.ProcessImage(cameraImg);
+            AForge.Imaging.Blob[] blobs = bc.GetObjectsInformation();
+      
+            if (blobs.Length > 0)
+            {
+                bc.ExtractBlobsImage(cameraImg, blobs[0], true);
+            }
+
+            pic = cameraImg.ToManagedImage();
+            return pic;
+        }
+
         public Bitmap showPicture()
         {
            Bitmap pic = cameraImg.ToManagedImage();
            return pic;
         }
 
-        private void rotateNumber()
+        public float rotateAngle()
         {
+            recogniseNumber();
+
             // Центр масс
             Tuple<int, int> mass_center;
             // Геометрический центр
@@ -113,8 +141,22 @@ namespace Numbers
 
             // Угол наклона вектора <геом.центр -- центр масс>
             double grad = (double)(geom_center.Item2 - mass_center.Item2) / (double)(geom_center.Item1 - mass_center.Item1);
-            double rad = grad / 57.29;
-            double angle = Math.Atan(rad);
+          //  double rad = grad / 57.29;
+            double angle = Math.Atan(Math.PI * grad / 180.0);
+
+            //return (float)(angle * (180.0 / Math.PI));
+            return (float)(Math.PI * grad / 180.0);
+
+            // Сам поворот
+     //       Bitmap result = new Bitmap(cameraImg.Width, cameraImg.Height);
+       //    
+         //   result = cameraImg.ToManagedImage();
+           
+            
+            // Обрезка повёрнутого числа
+        //    AForge.Imaging.Filters.ExtractBiggestBlob extractFfilter = new AForge.Imaging.Filters.ExtractBiggestBlob();
+          //  number = extractFfilter.Apply(cameraImg.ToManagedImage());
+          
         }
         
     }

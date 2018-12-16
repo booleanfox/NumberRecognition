@@ -98,8 +98,26 @@ namespace Numbers
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //pictureBox2.Image = processor.showPicture();
-            pictureBox2.Image = processor.recogniseNumber();
+            pictureBox2.Image = processor.showPicture();
+            //pictureBox2.Image = processor.recogniseNumber();
+            //            pictureBox2.Image = processor.recogniseNumber();
+
+            // отладочный лейбл, для угла
+            label1.Text = processor.rotateAngle().ToString();
+
+            var newBitmap = new Bitmap(pictureBox2.Image.Width, pictureBox2.Image.Height);
+            var graphics = Graphics.FromImage(newBitmap);
+            graphics.TranslateTransform((float)pictureBox2.Image.Width / 2, (float)pictureBox2.Image.Height / 2);
+            graphics.RotateTransform(processor.rotateAngle());
+            graphics.TranslateTransform(-(float)pictureBox2.Image.Width / 2, -(float)pictureBox2.Image.Height / 2);
+            graphics.DrawImage(pictureBox2.Image, new Point(0, 0));
+       //     pictureBox2.Image = newBitmap;
+             
+
+            Bitmap pic;
+            AForge.Imaging.Filters.ExtractBiggestBlob extractFfilter = new AForge.Imaging.Filters.ExtractBiggestBlob();
+            pic = extractFfilter.Apply(newBitmap);
+            pictureBox2.Image = pic;
         }
     }
 }
