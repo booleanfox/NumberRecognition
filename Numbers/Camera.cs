@@ -140,17 +140,10 @@ namespace Numbers
             mass_center = new Tuple<int, int>(x, y);
 
             // Угол наклона вектора <геом.центр -- центр масс>
-            double grad = (double)(geom_center.Item2 - mass_center.Item2) / (double)(geom_center.Item1 - mass_center.Item1);
-          //  double rad = grad / 57.29;
-            double angle = Math.Atan(Math.PI * grad / 180.0);
+            double k = (double)(geom_center.Item2 - mass_center.Item2) / (double)(geom_center.Item1 - mass_center.Item1);
+            return (float)(Math.Atan(k) * 180 / Math.PI);
 
-            //return (float)(angle * (180.0 / Math.PI));
-            return (float)(Math.PI * grad / 180.0);
-
-            // Сам поворот
-     //       Bitmap result = new Bitmap(cameraImg.Width, cameraImg.Height);
-       //    
-         //   result = cameraImg.ToManagedImage();
+ 
            
             
             // Обрезка повёрнутого числа

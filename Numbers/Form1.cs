@@ -111,8 +111,6 @@ namespace Numbers
             graphics.RotateTransform(processor.rotateAngle());
             graphics.TranslateTransform(-(float)pictureBox2.Image.Width / 2, -(float)pictureBox2.Image.Height / 2);
             graphics.DrawImage(pictureBox2.Image, new Point(0, 0));
-       //     pictureBox2.Image = newBitmap;
-             
 
             Bitmap pic;
             AForge.Imaging.Filters.ExtractBiggestBlob extractFfilter = new AForge.Imaging.Filters.ExtractBiggestBlob();
