@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Diagnostics;
+using AForge.Imaging;
+using AForge.Video;
+using AForge.Video.DirectShow;
 
 namespace Numbers
 {
@@ -26,6 +29,8 @@ namespace Numbers
         public int errorCount = 0;
         public bool stopByErrors = false;
 
+        public float ThresholdValue = 0;
+
         public MagicEye()
         { }
 
@@ -35,24 +40,22 @@ namespace Numbers
             stopByErrors = false;
 
             //  Минимальная сторона изображения (обычно это высота)    
-            if (bitmap.Height > bitmap.Width) throw new Exception("К такой забавной камере меня жизнь не готовила!");
-            int side = bitmap.Height;
+            //if (bitmap.Height > bitmap.Width) throw new Exception("К такой забавной камере меня жизнь не готовила!");
+            int side =Math.Min(bitmap.Height,bitmap.Width);
 
+            // обрезка фида с камера
             original = new Bitmap(bitmap.Width, bitmap.Height);
-
-            Rectangle cropRect = new Rectangle((bitmap.Width - bitmap.Height) / 2 + 40, 40, side, side);
-
+            Rectangle cropRect = new Rectangle(0, 0 ,side, side);
             Graphics g = Graphics.FromImage(original);
-
-            g.DrawImage(bitmap, new Rectangle(0, 0, original.Width, original.Height), cropRect, GraphicsUnit.Pixel);
+            g.DrawImage(bitmap, new Rectangle(0, 0, bitmap.Width, bitmap.Height), cropRect, GraphicsUnit.Pixel);
             
 
             //  Конвертируем изображение в градации серого
             AForge.Imaging.Filters.Grayscale grayFilter = new AForge.Imaging.Filters.Grayscale(0.2125, 0.7154, 0.0721);
-            processed = grayFilter.Apply(AForge.Imaging.UnmanagedImage.FromManagedImage(original));
+            var processed = grayFilter.Apply(AForge.Imaging.UnmanagedImage.FromManagedImage(original));
 
-            //  Масштабируем изображение до 500x500 - этого достаточно
-            AForge.Imaging.Filters.ResizeBilinear scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(500, 500);
+            //  Масштабируем изображение до 300x300 - этого достаточно
+            AForge.Imaging.Filters.ResizeBilinear scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(300, 300);
             original = scaleFilter.Apply(original);
 
 
@@ -60,14 +63,19 @@ namespace Numbers
 
             //  Пороговый фильтр применяем. Величина порога берётся из настроек, и меняется на форме
             AForge.Imaging.Filters.BradleyLocalThresholding threshldFilter = new AForge.Imaging.Filters.BradleyLocalThresholding();
-            threshldFilter.PixelBrightnessDifferenceLimit = 0.15f;
+            threshldFilter.PixelBrightnessDifferenceLimit = ThresholdValue;
             threshldFilter.ApplyInPlace(processed);
+
+            
+
+            //  Инвертируем изображение, пустота черная
+            AForge.Imaging.Filters.Invert InvertFilter = new AForge.Imaging.Filters.Invert();
+            InvertFilter.ApplyInPlace(processed);
+
+            
 
             cameraImg = processed;
 
-            ///  Инвертируем изображение
-            AForge.Imaging.Filters.Invert InvertFilter = new AForge.Imaging.Filters.Invert();
-            InvertFilter.ApplyInPlace(cameraImg);
         }
 
         public Bitmap recogniseNumber()
@@ -108,8 +116,9 @@ namespace Numbers
 
         public Bitmap showPicture()
         {
-           Bitmap pic = cameraImg.ToManagedImage();
-           return pic;
+            //if(cameraImg!= null)
+                return  cameraImg.ToManagedImage();
+           // return new Bitmap(1, 1);
         }
 
         public float rotateAngle()
