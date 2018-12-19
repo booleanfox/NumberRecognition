@@ -4,7 +4,7 @@ using System.Windows.Forms;
 using AForge.Video;
 using AForge.Video.DirectShow;
 using System.Diagnostics;
-
+using System.IO;
 
 namespace Numbers
 {
@@ -37,7 +37,7 @@ namespace Numbers
 
         private MagicEye processor = new MagicEye();
 
-        static int sensors_count = 300 * 300;
+        static int sensors_count = 300;
         static int layer_count = sensors_count * 2;
         static int digit_count = 10;
         private AForge.Neuro.ActivationNetwork net = new AForge.Neuro.ActivationNetwork(new AForge.Neuro.SigmoidFunction(), sensors_count, layer_count, layer_count,digit_count);
@@ -128,7 +128,7 @@ namespace Numbers
             SolidBrush mySolidBrush = new SolidBrush(Color.Black);
             graphics.FillRectangle(mySolidBrush, 0, 0, side, side); // fill it black
             graphics.TranslateTransform(enlargedbackground.Width / 2, enlargedbackground.Height / 2);
-            graphics.RotateTransform(-angle);
+            graphics.RotateTransform(angle);
             graphics.DrawImageUnscaled(pic, -pic.Width / 2, -pic.Height / 2); // draw blob rotated in the center
             graphics.ResetTransform();
 
@@ -188,14 +188,15 @@ namespace Numbers
 
 
 
-                AForge.Imaging.Filters.ExtractBiggestBlob extractFfilter = new AForge.Imaging.Filters.ExtractBiggestBlob();
-                processed = extractFfilter.Apply(processed);
-
-
-                float angle = get_angle(processed.ToManagedImage());
-
-
             Bitmap pic = processed.ToManagedImage();
+            AForge.Imaging.Filters.ExtractBiggestBlob extractFfilter = new AForge.Imaging.Filters.ExtractBiggestBlob();
+                pic = extractFfilter.Apply(pic);
+
+
+            float angle = get_angle(pic);
+
+
+            
 
             // placing rotated blob on black background 
              side = Math.Max(processed.Width * 2, processed.Height * 2);
@@ -254,6 +255,21 @@ namespace Numbers
 
         }
 
+        private void train()
+        {
+
+           var Paths0  = Directory.GetFiles("C:\\Users\\boole\\Desktop\\training\\0");
+           var Paths1 = Directory.GetFiles("C:\\Users\\boole\\Desktop\\training\\1");
+           var Paths2 = Directory.GetFiles("C:\\Users\\boole\\Desktop\\training\\2");
+           var Paths3 = Directory.GetFiles("C:\\Users\\boole\\Desktop\\training\\3");
+           var Paths4 = Directory.GetFiles("C:\\Users\\boole\\Desktop\\training\\4");
+
+            var b = ProcessImageFromFile(Paths0[0]);
+
+
+        }
+
+
         private void Form1_Load(object sender, EventArgs e)
         {
             CloseOpenVideoSource();
@@ -263,6 +279,11 @@ namespace Numbers
         {
             processor.ThresholdValue = (float)trackBar1.Value / 100;
             ProccesImageToScreen();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            train();
         }
     }
 }
