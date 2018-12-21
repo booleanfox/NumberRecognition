@@ -8,6 +8,7 @@ using System.Diagnostics;
 using AForge.Imaging.Filters;
 using AForge.Video;
 using AForge.Video.DirectShow;
+using Accord.Neuro;
 
 namespace Numbers
 {
@@ -25,7 +26,9 @@ namespace Numbers
         public bool Recongnised { get; private set; }
         public float Angle { get; private set; }
         public float AngleRad { get; private set; }
-        public float ThresholdValue = 0.3f;
+        public float ThresholdValue = 0.15f;
+
+        private static MagicEye empty_proccor = new MagicEye();
 
 
         // filters objects
@@ -34,7 +37,7 @@ namespace Numbers
         BradleyLocalThresholding threshldFilter;
         Invert InvertFilter;
         AForge.Imaging.BlobCounter Blober;
-
+        
         Graphics g;
         public MagicEye()
         {
@@ -56,9 +59,6 @@ namespace Numbers
         {
             lock (balanceLock)
             {
-
-           
-
             int side =Math.Min(input_image.Height,input_image.Width);
             Rectangle cropRect = new Rectangle(0, 0 ,side, side); // this is square that represents feed from camera
             g.DrawImage(input_image, new Rectangle(0, 0, input_image.Width, input_image.Height), cropRect, GraphicsUnit.Pixel); // place it on original bitmap         
@@ -110,19 +110,25 @@ namespace Numbers
             
             double toDbl(Color c)
             {
-                var s = c.A + c.B + c.G;
-                return s > 50 ? 1 : 0;
+                var s =c.R + c.B + c.G;
+                if (s > 50)
+                    return 1.0;
+                return -1;
 
             }
 
             input = new double[countBlocks * countBlocks + 1];
             AForge.Imaging.UnmanagedImage img;
-            var filter = new ResizeNearestNeighbor(countBlocks, countBlocks);
+            var filter = new ResizeBicubic(countBlocks, countBlocks);
             double angle;
+            
             lock (balanceLock)
             {
                angle = AngleRad;
-               img = filter.Apply(processed);
+                if (processed.Height == countBlocks && processed.Width == countBlocks)
+                    img = processed.Clone();
+                else
+                    img = filter.Apply(processed);
             }
             
             double max_input = 0;
@@ -141,14 +147,61 @@ namespace Numbers
                 for (int i = 0; i < input.Length-1; i++)
                 {
                     input[i] /= max_input;
+                    
                 }
             input[countBlocks * countBlocks] = AngleRad / Math.PI/2.0;
             return img;
 
         }
 
+     
+        public void GetInputLines(out double[] inp, int countBlocks)
+        {
+          
+            var input = new double[countBlocks*2+1].Select(d => 0.0).ToArray();
+            AForge.Imaging.UnmanagedImage img;
+            var filter = new ResizeBicubic(countBlocks, countBlocks);
+            double angle;
 
+            lock (balanceLock)
+            {
+                angle = AngleRad;
+                if (processed.Height == countBlocks && processed.Width == countBlocks)
+                    img = processed.Clone();
+                else
+                    img = filter.Apply(processed);
+            }
 
+          
+
+            img.CollectActivePixels().ForEach(p => { input[p.Y] += 1; input[countBlocks+p.X] += 1; });
+            var mx = input.Max();
+            if(mx !=0)
+            for (int i = 0; i < input.Length; i++)
+            {
+                    input[i] /= mx;
+            }
+            input[input.Length - 1] = (double)angle/Math.PI/2;
+
+            inp = input;
+
+        }
+
+        public static void GetInputFromPath(string path, out double[] input, int countBlocks = 100)
+        {
+            empty_proccor.processed = AForge.Imaging.UnmanagedImage.FromManagedImage(new Bitmap(path));
+            empty_proccor.GetInput(out input, countBlocks);
+        }
+
+        public void GetPicture(out Bitmap or, out Bitmap num)
+        {
+            lock (balanceLock)
+            {
+                or = new Bitmap(original);
+                num = new Bitmap(number);
+
+            }
+        }
     }
 }
 
