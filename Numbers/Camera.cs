@@ -202,6 +202,35 @@ namespace Numbers
 
             }
         }
+
+        private AForge.Imaging.UnmanagedImage sav;
+        public void presave()
+        {
+            lock (balanceLock)
+            {
+                sav = AForge.Imaging.UnmanagedImage.FromManagedImage(number);
+
+            }
+
+        }
+
+        public AForge.Imaging.UnmanagedImage GetImage()
+        {
+            ResizeBicubic resize = new ResizeBicubic(28, 28);
+            lock (balanceLock)
+            {
+                return resize.Apply(processed);
+            }
+            
+        }
+
+
+        public void Save(string path)
+        {
+            ResizeBicubic resize = new ResizeBicubic(28, 28);
+            resize.Apply(sav).ToManagedImage().Save(path);
+        }
+
     }
 }
 
