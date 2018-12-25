@@ -43,7 +43,7 @@ namespace Numbers
 
         private MagicEye processor = new MagicEye();
 
-        string path_to_sampe_dir  = "D:\\images\\";
+        string path_to_sampe_dir  = "C:\\Users\\Ита\\Documents\\AI\\NumberRecognition\\images\\";
         static int blockcount = 28;
         static int sensors_count =blockcount*blockcount;
         static int layer_count = sensors_count * 3;
@@ -232,7 +232,7 @@ namespace Numbers
         {
             var r = new Random();
             processor.presave();
-            processor.Save("D:\\images\\" + comboBox1.SelectedIndex.ToString()+"\\" + r.Next().ToString() + r.Next().ToString() + ".png");
+            processor.Save(path_to_sampe_dir + comboBox1.SelectedIndex.ToString()+"\\" + r.Next().ToString() + r.Next().ToString() + ".png");
             
 
         }

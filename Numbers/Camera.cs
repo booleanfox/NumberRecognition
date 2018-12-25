@@ -61,8 +61,8 @@ namespace Numbers
             {
             int side =Math.Min(input_image.Height,input_image.Width);
             Rectangle cropRect = new Rectangle(0, 0 ,side, side); // this is square that represents feed from camera
-            g.DrawImage(input_image, new Rectangle(0, 0, input_image.Width, input_image.Height), cropRect, GraphicsUnit.Pixel); // place it on original bitmap         
-                                                                                                                                // set new processed
+            //g.DrawImage(input_image, new Rectangle(0, 0, input_image.Width, input_image.Height), cropRect, GraphicsUnit.Pixel); // place it on original bitmap         
+                original = new Bitmap(input_image);                                                                                                                // set new processed
             if (processed != null)
                 processed.Dispose();  //  Конвертируем изображение в градации серого
             processed = grayFilter.Apply(AForge.Imaging.UnmanagedImage.FromManagedImage(original));
